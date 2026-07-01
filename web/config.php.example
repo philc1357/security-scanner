@@ -1,0 +1,28 @@
+<?php
+/**
+ * Konfiguration — Kopiere diese Datei zu config.php und passe die Werte an.
+ * config.php selbst gehört NICHT ins Versionskontrollsystem (siehe .gitignore).
+ */
+
+return [
+    // ---------------------------------------------------------------
+    // Datenbank (MySQL/MariaDB) — wird ausschließlich über PDO genutzt
+    // ---------------------------------------------------------------
+    'db' => [
+        'dsn'      => 'mysql:host=127.0.0.1;dbname=website_scanner;charset=utf8mb4',
+        'user'     => 'scanner',
+        'password' => 'CHANGE_ME',
+    ],
+
+    // ---------------------------------------------------------------
+    // Python-Scan-Engine
+    // ---------------------------------------------------------------
+    'engine' => [
+        // Pfad zum Python-Interpreter (idealerweise das venv des Projekts)
+        'python'      => PHP_OS_FAMILY === 'Windows' ? 'python' : 'python3',
+        // Absoluter Pfad zu engine/scan.py
+        'script'      => dirname(__DIR__) . '/engine/scan.py',
+        // Maximale Laufzeit eines Scans in Sekunden (verhindert hängende Prozesse)
+        'timeout_sec' => 60,
+    ],
+];

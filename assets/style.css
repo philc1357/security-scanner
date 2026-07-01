@@ -1,0 +1,198 @@
+/* ===========================================================================
+   IT-Sicherheits-Check — Ergänzungen zu Bootstrap 5
+   Nur das, was Bootstrap nicht out-of-the-box liefert: Ampel-Verlauf im
+   Report-Kopf, Score-Gauge, runde Status-Icons und Druck-Optimierung.
+   =========================================================================== */
+
+/* --- Ampel-Verlauf im Report-Kopf --- */
+.rating-gruen { background: linear-gradient(135deg, #1f9d55, #157a41); }
+.rating-gelb  { background: linear-gradient(135deg, #d99520, #b06f0e); }
+.rating-rot   { background: linear-gradient(135deg, #d84444, #ad2727); }
+
+/* --- Score-Gauge --- */
+.gauge { background: rgba(255, 255, 255, .16); min-width: 130px; }
+.gauge-score { font-size: 2.6rem; }
+
+/* --- Runde Status-Icons in den Befund-Karten --- */
+.badge.rounded-circle {
+    width: 1.6rem; height: 1.6rem;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700;
+}
+
+/* --- Einheitlicher Fokus-Rahmen für input-group (Domain-Feld + Button) ---
+   Bootstrap legt den Fokus-Schatten standardmäßig nur um das jeweils
+   fokussierte Einzelelement, dadurch wirkt er höher als das danebenliegende
+   Element. Stattdessen umschließt der Schatten die gesamte Gruppe. */
+.input-group:focus-within {
+    box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+    border-radius: var(--bs-border-radius-lg);
+}
+.input-group:focus-within > .form-control:focus,
+.input-group:focus-within > .btn:focus {
+    box-shadow: none;
+}
+
+/* ===========================================================================
+   Globales Design (Sicherheitsbericht-Optik) — Markenfarbe, Schrift, Panels.
+   Gilt projektweit über layout_top.php; Berichtsseite nutzt die Komponenten
+   unten zusätzlich für Gauge, Maßnahmen-Liste und Befund-Karten.
+   =========================================================================== */
+:root{
+    --brand:#1d3b8f;
+    --ink:#161a23;
+    --muted:#6b7280;
+    --line:#e6e9f0;
+    --bg:#eef0f4;
+    --card-shadow:0 1px 2px rgba(16,24,40,.04);
+    --c-bad:#dc2626;   --c-bad-soft:#fdeceb;
+    --c-warn:#c2410c;  --c-warn-soft:#fbf0e7;
+    --c-ok:#15803d;    --c-ok-soft:#eaf5ed;
+    --c-info:#5b6475;  --c-info-soft:#eef0f4;
+}
+body{
+    font-family:'Albert Sans',system-ui,-apple-system,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    padding-top:56px; /* Platz für die per .fixed-top fixierte Navbar */
+}
+.panel{
+    background:#fff;border:1px solid var(--line);border-radius:20px;
+    box-shadow:var(--card-shadow);
+}
+.label-eyebrow{
+    text-transform:uppercase;letter-spacing:.16em;font-size:12px;
+    font-weight:600;color:var(--brand);
+}
+.section-title{font-size:21px;font-weight:700;letter-spacing:-.01em;}
+.cat-title{text-transform:uppercase;letter-spacing:.1em;font-size:12px;font-weight:600;color:#8a91a3;}
+
+/* --- Score-Gauge der Berichtsseite (gescoped, kollidiert nicht mit der
+       einfachen .gauge-score-Vorschau auf index.php) --- */
+.gauge-ring{
+    width:132px;height:132px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+}
+.gauge-ring .gauge-inner{
+    width:104px;height:104px;border-radius:50%;background:#fff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.gauge-ring .gauge-score{font-size:34px;font-weight:700;line-height:1;}
+.gauge-ring .gauge-score small{font-size:14px;font-weight:500;color:#9aa1ad;}
+.gauge-ring .gauge-label{text-transform:uppercase;letter-spacing:.08em;font-size:11px;font-weight:600;margin-top:4px;}
+
+/* --- Count-Chips --- */
+.chip{
+    display:inline-flex;align-items:center;gap:7px;
+    font-weight:600;font-size:13.5px;padding:7px 14px;border-radius:999px;
+}
+.chip .dot{width:7px;height:7px;border-radius:50%;}
+.chip-bad{background:var(--c-bad-soft);color:var(--c-bad);}
+.chip-bad .dot{background:var(--c-bad);}
+.chip-warn{background:var(--c-warn-soft);color:var(--c-warn);}
+.chip-warn .dot{background:var(--c-warn);}
+.chip-ok{background:var(--c-ok-soft);color:var(--c-ok);}
+.chip-ok .dot{background:var(--c-ok);}
+
+.btn-pdf{
+    border:1px solid var(--brand);background:#fff;color:var(--brand);
+    font-weight:600;font-size:13.5px;padding:8px 16px;border-radius:999px;
+}
+.btn-pdf:hover{background:var(--brand);color:#fff;}
+
+/* --- Maßnahmen-Liste --- */
+.measures{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--card-shadow);}
+.measure{display:flex;gap:16px;align-items:flex-start;padding:20px 24px;border-top:1px solid #eef0f4;}
+.measure:first-child{border-top:0;}
+.measure .num{flex:none;width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.measure .m-title{font-weight:600;font-size:15.5px;}
+.measure .m-desc{font-size:14px;color:var(--muted);margin-top:4px;line-height:1.5;}
+.sev{font-size:12px;font-weight:600;padding:4px 11px;border-radius:999px;white-space:nowrap;}
+.sev-Kritisch{background:var(--ink);color:#fff;}
+.sev-Hoch{background:var(--c-bad-soft);color:var(--c-bad);}
+.sev-Mittel{background:var(--c-warn-soft);color:var(--c-warn);}
+.sev-Niedrig{background:var(--c-ok-soft);color:var(--c-ok);}
+.sev-Info{background:var(--c-info-soft);color:var(--c-info);}
+.effort{font-size:12px;color:#9aa1ad;}
+
+/* --- Detail-Karten (Befunde) --- */
+.finding{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 22px;box-shadow:var(--card-shadow);}
+.finding.bad{border-left:4px solid var(--c-bad);}
+.finding.warn{border-left:4px solid var(--c-warn);}
+.finding.ok{border-left:4px solid var(--c-ok);}
+.finding.info{border-left:4px solid var(--c-info);}
+.stat{flex:none;width:26px;height:26px;border-radius:50%;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.stat-bad{background:var(--c-bad-soft);color:var(--c-bad);}
+.stat-warn{background:var(--c-warn-soft);color:var(--c-warn);}
+.stat-ok{background:var(--c-ok-soft);color:var(--c-ok);}
+.stat-info{background:var(--c-info-soft);color:var(--c-info);}
+.f-title{font-weight:600;font-size:15px;}
+.f-desc{font-size:14.5px;line-height:1.55;color:#3a3f4b;}
+.rec{background:#f4f7fc;border-radius:10px;padding:12px 15px;font-size:14px;line-height:1.5;color:#2b303c;}
+.rec strong{color:var(--brand);}
+.header-line{font-size:13px;color:#8a91a3;}
+.header-line code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#f1f3f7;color:#5b6475;padding:2px 9px;border-radius:6px;word-break:break-all;}
+.footnote{color:#9aa1ad;font-size:13px;line-height:1.6;border-top:1px solid #e2e5ec;}
+
+/* ===========================================================================
+   Landing-Page (index.php) — Eyecatcher, die Bootstrap nicht mitbringt
+   =========================================================================== */
+
+/* --- Donut/Ring-Diagramm: Anteil unsicherer Websites ---
+   Reiner CSS-Ring per conic-gradient. Der rote Bereich reicht von 0 bis
+   --value Prozent (= "unsicher"), der Rest ist grün. Das innere "Loch" entsteht
+   durch eine aufgesetzte runde Fläche (::before); deren Farbe wird über
+   --donut-hole an den jeweiligen Hintergrund angepasst (Standard: weiß). */
+.donut {
+    --value: 90;
+    --size: 12rem;
+    --thickness: 1.6rem;
+    --donut-hole: #fff;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background: conic-gradient(
+        var(--bs-danger) calc(var(--value) * 1%),
+        var(--bs-success) 0
+    );
+    display: grid;
+    place-items: center;
+    position: relative;
+    flex-shrink: 0;
+}
+.donut::before {
+    content: "";
+    position: absolute;
+    width: calc(var(--size) - 2 * var(--thickness));
+    height: calc(var(--size) - 2 * var(--thickness));
+    border-radius: 50%;
+    background: var(--donut-hole);
+}
+.donut-label {
+    position: relative; /* liegt über dem ::before-Loch */
+    text-align: center;
+    line-height: 1.1;
+}
+
+/* --- Große Kennzahlen in den Awareness-Karten --- */
+.stat-num {
+    font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.05;
+}
+
+/* --- Druck / PDF: Navigation, Buttons und interaktive Elemente ausblenden;
+       Hintergrundfarben (Ampel, Badges) für den Druck erzwingen --- */
+@media print {
+    @page { margin: 20mm 16mm 16mm 16mm; }
+    body { background: #fff; padding-top: 0; }
+    .navbar, footer, .no-print { display: none !important; }
+    .card, .panel, .finding, .measure { box-shadow: none !important; break-inside: avoid; }
+    .section-title, .cat-title { break-after: avoid; }
+    .rating-gruen, .rating-gelb, .rating-rot,
+    .badge, .gauge, .donut, .progress, .progress-bar,
+    .chip, .sev, .gauge-ring, .stat {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}

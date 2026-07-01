@@ -1,0 +1,8 @@
+# Scan-Engine — Python-Abhängigkeiten
+requests>=2.31.0
+colorama>=0.4.6
+dnspython>=2.6.0     # Phase 3: SPF/DKIM/DMARC (E-Mail/DNS-Scanner)
+beautifulsoup4>=4.12.0  # Phase 4: HTML-Auswertung (DSGVO/Cookies-Scanner)
+
+# Spätere Phasen (bereits hier dokumentiert):
+# sslyze>=6.0.0      # Phase 2: TLS-Konfiguration (optional, sonst stdlib ssl)

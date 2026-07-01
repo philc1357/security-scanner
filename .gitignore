@@ -1,0 +1,15 @@
+# Lokale Konfiguration mit Zugangsdaten — niemals einchecken
+web/config.php
+
+# Scan-Ergebnisse enthalten Sicherheitsberichte fremder Websites — niemals einchecken
+scans/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Editor / OS
+*.swp
+.DS_Store
